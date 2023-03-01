@@ -4,11 +4,11 @@
 #include <FEHMotor.h>
 #include <FEHRPS.h>
 
-#define diameter 3.25 //diameter of wheel in inches
+#define counts_per_inch 15.4
 
 //Declarations for encoders & motors
-DigitalEncoder right_encoder(FEHIO::P0_0);
-DigitalEncoder left_encoder(FEHIO::P0_1);
+DigitalEncoder right_encoder(FEHIO::P0_1);
+DigitalEncoder left_encoder(FEHIO::P1_0);
 FEHMotor right_motor(FEHMotor::Motor0,9.0);
 FEHMotor left_motor(FEHMotor::Motor1,9.0);
 
@@ -31,10 +31,45 @@ void move_forward(int percent, int counts) //using encoders
     left_motor.Stop();
 }
 
+void turn_left(int percent, int counts) {
+	//Reset encoder counts
+	right_encoder.ResetCounts();
+	left_encoder.ResetCounts();
+	//Set both motors to desired percent
+	right_motor.SetPercent(-percent);
+	left_motor.SetPercent(percent);
+	//While the average of the left and right encoder is less than counts,
+	//keep running motors
+	while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+
+	//Turn off motors
+	right_motor.Stop();
+	left_motor.Stop();
+}
+
+void turn_right(int percent, int counts) {
+	//Reset encoder counts
+	right_encoder.ResetCounts();
+	left_encoder.ResetCounts();
+	//Set both motors to desired percent
+	left_motor.SetPercent(-percent);
+	right_motor.SetPercent(percent);
+	//While the average of the left and right encoder is less than counts,
+	//keep running motors
+	while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
+
+	//Turn off motors
+	right_motor.Stop();
+	left_motor.Stop();
+}
+
 int main(void)
 {
-    int motor_percent = 50; //Input power level here
-    int expected_counts = 40; //Input theoretical counts here
+    int motor_percent = 40; //Input power level here
+    
+	int turn_counts = 206;
+	int ten_counts = 405;
+	int four_counts = 162;
 
     float x, y; //for touch screen
 
@@ -47,18 +82,24 @@ int main(void)
     while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
     while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
 
-    move_forward(motor_percent, expected_counts); //see function
-
-    Sleep(2.0); //Wait for counts to stabilize
-    //Print out data
-    LCD.Write("Theoretical Counts: ");
-    LCD.WriteLine(expected_counts);
-    LCD.Write("Motor Percent: ");
-    LCD.WriteLine(motor_percent);
-    LCD.Write("Actual LE Counts: ");
-    LCD.WriteLine(left_encoder.Counts());
-    LCD.Write("Actual RE Counts: ");
-    LCD.WriteLine(right_encoder.Counts());
+    move_forward(motor_percent, 23*counts_per_inch); //see function
+	Sleep(1.0);
+	turn_right(motor_percent, 70);
+	Sleep(1.0);
+	move_forward(motor_percent, 33*counts_per_inch);
+	Sleep(1.0);
+	turn_right(motor_percent, 40);
+	Sleep(1.0);
+	move_forward(motor_percent, 16*counts_per_inch);
+	Sleep(1.0);
+    turn_right(motor_percent, 40);
+	Sleep(1.0);
+    move_forward(motor_percent, 24*counts_per_inch);
+	Sleep(1.0);
+    turn_right(motor_percent, 60);
+	Sleep(1.0);
+    move_forward(motor_percent, 32*counts_per_inch);
+	Sleep(1.0);
 
     return 0;
 }
