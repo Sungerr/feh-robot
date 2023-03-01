@@ -9,8 +9,9 @@
 //Declarations for encoders & motors
 DigitalEncoder right_encoder(FEHIO::P0_1);
 DigitalEncoder left_encoder(FEHIO::P1_0);
+AnalogInputPin cds(FEHIO::P3_0);
 FEHMotor right_motor(FEHMotor::Motor0,9.0);
-FEHMotor left_motor(FEHMotor::Motor1,9.0);
+FEHMotor left_motor(FEHMotor::Motor3, 9.0);
 
 void move_forward(int percent, int counts) //using encoders
 {
@@ -65,42 +66,40 @@ void turn_right(int percent, int counts) {
 
 int main(void)
 {
-    int motor_percent = 40; //Input power level here
-    
-	int turn_counts = 206;
-	int ten_counts = 405;
-	int four_counts = 162;
-
+    int motor_percent = 50; //Input power level here
     float x, y; //for touch screen
 
     //Initialize the screen
     LCD.Clear(BLACK);
     LCD.SetFontColor(WHITE);
+    while(cds.Value() > 1.5){ 
+        LCD.WriteLine(cds.Value());
+        Sleep(0.1);
+    } //Wait for screen to be pressed
 
-    LCD.WriteLine("Shaft Encoder Exploration Test");
-    LCD.WriteLine("Touch the screen");
-    while(!LCD.Touch(&x,&y)); //Wait for screen to be pressed
-    while(LCD.Touch(&x,&y)); //Wait for screen to be unpressed
-
-    move_forward(motor_percent, 23*counts_per_inch); //see function
+    move_forward(motor_percent, 18*counts_per_inch); //see function
 	Sleep(1.0);
-	turn_right(motor_percent, 70);
+	turn_left(motor_percent-10, 32);
+    Sleep(1.0);
+    move_forward(motor_percent, 11*counts_per_inch); //see function
 	Sleep(1.0);
-	move_forward(motor_percent, 33*counts_per_inch);
+	turn_right(motor_percent-10, 100);
 	Sleep(1.0);
-	turn_right(motor_percent, 40);
-    //test
+	move_forward(motor_percent, 37*counts_per_inch);
 	Sleep(1.0);
-	move_forward(motor_percent, 16*counts_per_inch);
+	turn_right(motor_percent, 55);
+    //6 = 90 degree turn
 	Sleep(1.0);
-    turn_right(motor_percent, 40);
+	move_forward(motor_percent, 14*counts_per_inch);
+	Sleep(1.0);
+    turn_right(motor_percent, 7*counts_per_inch);
 	Sleep(1.0);
     move_forward(motor_percent, 24*counts_per_inch);
-	Sleep(1.0);
-    turn_right(motor_percent, 60);
-	Sleep(1.0);
-    move_forward(motor_percent, 32*counts_per_inch);
-	Sleep(1.0);
+    Sleep(1.0);
+    turn_right(motor_percent, 2*counts_per_inch);
+    Sleep(1.0);
+    move_forward(motor_percent, 20*counts_per_inch);
+    Sleep(1.0);
 
     return 0;
 }
