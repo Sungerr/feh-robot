@@ -89,6 +89,7 @@ int main(void)
 	move_forward(motor_percent, 33*counts_per_inch);
 	Sleep(1.0);
 	turn_right(motor_percent, 40);
+    //test
 	Sleep(1.0);
 	move_forward(motor_percent, 16*counts_per_inch);
 	Sleep(1.0);
