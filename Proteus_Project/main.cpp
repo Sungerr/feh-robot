@@ -4,9 +4,7 @@
 #include <FEHMotor.h>
 #include <FEHRPS.h>
 
-#define counts_per_inch 16.6
-#define counts_per_degree_right 1.056
-#define counts_per_degree_left 1.078
+#define counts_per_inch 15.4
 
 //Declarations for encoders & motors
 DigitalEncoder right_encoder(FEHIO::P0_1);
@@ -68,7 +66,7 @@ void turn_right(int percent, int counts) {
 
 int main(void)
 {
-    int motor_percent = 30; //Input power level here
+    int motor_percent = 50; //Input power level here
     float x, y; //for touch screen
 
     //Initialize the screen
@@ -79,34 +77,28 @@ int main(void)
         Sleep(0.1);
     } //Wait for screen to be pressed
 
+    move_forward(motor_percent, 18*counts_per_inch); //see function
 	Sleep(1.0);
-	
-	//turn_right(motor_percent, 95); //About 90 degrees
-	//turn_left(motor_percent, 97); //About 90 degrees
-    move_forward(motor_percent, 17*counts_per_inch); //see function
-	Sleep(1.0);
-	turn_left(motor_percent, 25*counts_per_degree_left);
+	turn_left(motor_percent-10, 32);
     Sleep(1.0);
-    move_forward(motor_percent, 8.5*counts_per_inch); //see function
+    move_forward(motor_percent, 11*counts_per_inch); //see function
 	Sleep(1.0);
-	turn_right(motor_percent, 110);
+	turn_right(motor_percent-10, 100);
 	Sleep(1.0);
-	move_forward(motor_percent, 32*counts_per_inch);
+	move_forward(motor_percent, 37*counts_per_inch);
 	Sleep(1.0);
-	turn_right(motor_percent, 37*counts_per_degree_right);
+	turn_right(motor_percent, 55);
     //6 = 90 degree turn
 	Sleep(1.0);
-	move_forward(motor_percent, 20*counts_per_inch);
+	move_forward(motor_percent, 14*counts_per_inch);
 	Sleep(1.0);
-	move_forward(-motor_percent, 5*counts_per_inch);
+    turn_right(motor_percent, 7*counts_per_inch);
 	Sleep(1.0);
-    turn_right(motor_percent, 110*counts_per_degree_right);
-	Sleep(1.0);
-    move_forward(motor_percent, 30*counts_per_inch);
+    move_forward(motor_percent, 24*counts_per_inch);
     Sleep(1.0);
-    turn_right(motor_percent, 20*counts_per_degree_right);
+    turn_right(motor_percent, 2*counts_per_inch);
     Sleep(1.0);
-    move_forward(motor_percent, 30*counts_per_inch);
+    move_forward(motor_percent, 20*counts_per_inch);
     Sleep(1.0);
 
     return 0;
