@@ -86,26 +86,26 @@ int main(void)
 	//turn_left(motor_percent, 97); //About 90 degrees
     move_forward(motor_percent, 17*counts_per_inch); //see function
 	Sleep(1.0);
-	turn_left(motor_percent, 25*counts_per_degree_left);
+	turn_left(motor_percent, 29*counts_per_degree_left);
     Sleep(1.0);
-    move_forward(motor_percent, 8.5*counts_per_inch); //see function
+    move_forward(motor_percent, 8.8*counts_per_inch); //see function
 	Sleep(1.0);
-	turn_right(motor_percent, 110);
+	turn_right(motor_percent, 88);
 	Sleep(1.0);
-	move_forward(motor_percent, 32*counts_per_inch);
+	move_forward(motor_percent+10, 35*counts_per_inch);
 	Sleep(1.0);
 	turn_right(motor_percent, 37*counts_per_degree_right);
     //6 = 90 degree turn
 	Sleep(1.0);
-	move_forward(motor_percent, 20*counts_per_inch);
+	move_forward(motor_percent, 25*counts_per_inch);
 	Sleep(1.0);
 	move_forward(-motor_percent, 5*counts_per_inch);
 	Sleep(1.0);
-    turn_right(motor_percent, 110*counts_per_degree_right);
+    turn_right(motor_percent, 120*counts_per_degree_right);
 	Sleep(1.0);
-    move_forward(motor_percent, 30*counts_per_inch);
+    move_forward(motor_percent, 35*counts_per_inch);
     Sleep(1.0);
-    turn_right(motor_percent, 20*counts_per_degree_right);
+    turn_right(motor_percent, 70*counts_per_degree_right);
     Sleep(1.0);
     move_forward(motor_percent, 30*counts_per_inch);
     Sleep(1.0);
