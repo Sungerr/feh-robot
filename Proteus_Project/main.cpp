@@ -5,6 +5,7 @@
 #include <FEHMotor.h>
 #include <FEHRPS.h>
 #include <FEHBattery.h>
+#include <FEHServo.h>
 
 #define counts_per_inch 16.6
 #define counts_per_degree_right 1.056
@@ -18,10 +19,12 @@
 
 //Declarations for encoders & motors
 DigitalEncoder right_encoder(FEHIO::P0_1);
-DigitalEncoder left_encoder(FEHIO::P1_0);
+DigitalEncoder left_encoder(FEHIO::P2_0);
 AnalogInputPin cds(FEHIO::P3_0);
 FEHMotor right_motor(FEHMotor::Motor0,9.0);
 FEHMotor left_motor(FEHMotor::Motor3, 9.0);
+FEHServo servo(FEHServo::Servo0);
+FEHMotor servoMotor(FEHMotor::Motor1, 9.0);
 
 void turn_left(int percent, int counts) {
 	//Reset encoder counts
@@ -32,8 +35,8 @@ void turn_left(int percent, int counts) {
 	left_motor.SetPercent(percent);
 	//While the average of the left and right encoder is less than counts,
 	//keep running motors
+	
 	while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
-
 	//Turn off motors
 	right_motor.Stop();
 	left_motor.Stop();
@@ -49,7 +52,6 @@ void turn_right(int percent, int counts) {
 	//While the average of the left and right encoder is less than counts,
 	//keep running motors
 	while((left_encoder.Counts() + right_encoder.Counts()) / 2. < counts);
-
 	//Turn off motors
 	right_motor.Stop();
 	left_motor.Stop();
@@ -57,22 +59,22 @@ void turn_right(int percent, int counts) {
 
 void move_forward(int percent, int counts, int direction) //using encoders
 {
-	// while (RPS.Heading() > 0 && (RPS.Heading() < (direction - 1) || RPS.Heading() > (direction + 1))) {
-	// 	if (RPS.Heading() > direction) {
-	// 		if (RPS.Heading() - direction > 180) {
-	// 			turn_left(10, 1);
-	// 		} else {
-	// 			turn_right(10, 1);
-	// 		}
-	// 	} else {
-	// 		if (direction - RPS.Heading() > 180) {
-	// 			turn_right(10, 1);
-	// 		} else {
-	// 			turn_left(10, 1);
-	// 		}
-	// 	}
-	// 	LCD.WriteLine(RPS.Heading());
-	// }
+	while (RPS.Heading() > 0 && (RPS.Heading() < (direction - 1) || RPS.Heading() > (direction + 1))) {
+		if (RPS.Heading() > direction) {
+			if (RPS.Heading() - direction > 180) {
+				turn_left(15, 2);
+			} else {
+				turn_right(15, 2);
+			}
+		} else {
+			if (direction - RPS.Heading() > 180) {
+				turn_right(15, 2);
+			} else {
+				turn_left(15, 2);
+			}
+		}
+		//LCD.WriteLine(RPS.Heading());
+	}
 	//LCD.WriteLine(RPS.Heading());
 
     //Reset encoder counts
@@ -127,9 +129,12 @@ int kiosk_light() {
 
 int main(void)
 {
-	//RPS.InitializeTouchMenu();
+	RPS.InitializeTouchMenu();
     int motor_percent = 40; //Input power level here
     float x, y; //for touch screen
+	int lever = RPS.GetCorrectLever();
+	LCD.WriteLine("Lever: ");
+	LCD.WriteLine(lever);
 
     //Initialize the screen
     LCD.Clear(BLACK);
@@ -142,40 +147,94 @@ int main(void)
 	// 	LCD.WriteLine(RPS.Y());
 	// 	Sleep(0.1);
 	// }
-		
-    while(cds.Value() > 1.5){ 
-        LCD.WriteLine(cds.Value());
-        Sleep(0.1);
-    } //Wait for screen to be pressed
 
-	//No RPS
-	move_forward(motor_percent, 15*counts_per_inch, 0); //see function
+	//servo.TouchCalibrate();
+	// int max = 1900;
+	// int min = 700;
+	// servo.SetMin(min);
+	// servo.SetMax(max);
+	// servo.SetDegree(0.0);
+	// LCD.WriteLine(0);
+	// Sleep(5.0);
+	// servo.SetDegree(90.0);
+	// LCD.WriteLine(90);
+	// Sleep(5.0);
+	// servo.SetDegree(170.0);
+	// LCD.WriteLine(170);
+	// Sleep(5.0);
+	// servo.SetDegree(0);
+
+    // while(cds.Value() > 1.5){ 
+    //     LCD.WriteLine(cds.Value());
+    //     Sleep(0.1);
+    // } //Wait for screen to be pressed
+
+	// //Lever
+
+	//Servo 180 = 40% 0.52 sec
+
+	
+	//Move 6 up, turn 90, 10, 14, 18, turn 90, move 2, servo, move back 2, wait, move forward 2, servo
+
+	move_forward(motor_percent, 8*counts_per_inch, 0);
 	Sleep(1.0);
-	move_forward(-motor_percent-5, 1*counts_per_inch, 0); //see function
+	turn_left(motor_percent, 80*counts_per_degree_left);
+	Sleep(1.0);
+	move_forward(motor_percent, (10*counts_per_inch) + (lever*4), 90);
+	LCD.WriteLine("Lever: ");
+	LCD.WriteLine(lever);
 	Sleep(1.0);
 	turn_left(motor_percent, 90*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent, 30*counts_per_inch, 0); //see function
+	move_forward(motor_percent, 2*counts_per_inch, 270);
 	Sleep(1.0);
-	turn_left(motor_percent, 18.5*counts_per_degree_left);
+	servoMotor.SetPercent(motor_percent);
+	Sleep(0.15);
+	servoMotor.SetPercent(0);
+	move_forward(-motor_percent, 2*counts_per_inch, 270);
 	Sleep(1.0);
-	move_forward(motor_percent, 23*counts_per_inch, 0); //see function
-	Sleep(1.0);
-	kiosk_light();
-	Sleep(1.0);
-	turn_right(motor_percent, 90*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(motor_percent, 10*counts_per_inch, 0); //see function
-	Sleep(1.0);
-	move_forward(-motor_percent, 20*counts_per_inch, 0); //see function
-	Sleep(1.0);
-	turn_right(motor_percent, 90*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(motor_percent, 14*counts_per_inch, 0); //see function
-	Sleep(1.0);
-	turn_right(motor_percent, 90*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(motor_percent, 20*counts_per_inch, 0); //see function
+	servoMotor.SetPercent(motor_percent);
+	Sleep(0.13);
+	servoMotor.SetPercent(0);
+	move_forward(motor_percent, 2*counts_per_inch, 270);
+	Sleep(5.0);
+	servoMotor.SetPercent(-motor_percent);
+	Sleep(0.26);
+	servoMotor.SetPercent(0);
+	
+
+
+
+
+	//No RPS
+
+	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// move_forward(-motor_percent-5, 1*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// turn_left(motor_percent, 90*counts_per_degree_left);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 30*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// turn_left(motor_percent, 18.5*counts_per_degree_left);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 23*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// kiosk_light();
+	// Sleep(1.0);
+	// turn_right(motor_percent, 87*counts_per_degree_right);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// move_forward(-motor_percent, 20*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// turn_right(motor_percent, 90*counts_per_degree_right);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 14*counts_per_inch, 0); //see function
+	// Sleep(1.0);
+	// turn_right(motor_percent, 90*counts_per_degree_right);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
 
 
 
