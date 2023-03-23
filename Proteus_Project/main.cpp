@@ -59,18 +59,18 @@ void turn_right(int percent, int counts) {
 
 void move_forward(int percent, int counts, int direction) //using encoders
 {
-	while (RPS.Heading() > 0 && (RPS.Heading() < (direction - 1) || RPS.Heading() > (direction + 1))) {
+	while (direction > 0 && RPS.Heading() > 0 && (RPS.Heading() < (direction - 1) || RPS.Heading() > (direction + 1))) {
 		if (RPS.Heading() > direction) {
 			if (RPS.Heading() - direction > 180) {
-				turn_left(15, 2);
+				turn_left(13, 1);
 			} else {
-				turn_right(15, 2);
+				turn_right(13, 1);
 			}
 		} else {
 			if (direction - RPS.Heading() > 180) {
-				turn_right(15, 2);
+				turn_right(13, 1);
 			} else {
-				turn_left(15, 2);
+				turn_left(13, 1);
 			}
 		}
 		//LCD.WriteLine(RPS.Heading());
@@ -164,10 +164,10 @@ int main(void)
 	// Sleep(5.0);
 	// servo.SetDegree(0);
 
-    // while(cds.Value() > 1.5){ 
-    //     LCD.WriteLine(cds.Value());
-    //     Sleep(0.1);
-    // } //Wait for screen to be pressed
+    while(cds.Value() > 1.5){ 
+        LCD.WriteLine(cds.Value());
+        Sleep(0.1);
+    } //Wait for screen to be pressed
 
 	// //Lever
 
@@ -176,27 +176,27 @@ int main(void)
 	
 	//Move 6 up, turn 90, 10, 14, 18, turn 90, move 2, servo, move back 2, wait, move forward 2, servo
 
-	move_forward(motor_percent, 8*counts_per_inch, 0);
+	move_forward(motor_percent, 10*counts_per_inch, 0);
 	Sleep(1.0);
 	turn_left(motor_percent, 80*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent, (10*counts_per_inch) + (lever*4), 90);
+	move_forward(motor_percent, (14*counts_per_inch) + ((lever*4)*counts_per_inch), 90);
 	LCD.WriteLine("Lever: ");
 	LCD.WriteLine(lever);
 	Sleep(1.0);
-	turn_left(motor_percent, 90*counts_per_degree_left);
+	turn_left(motor_percent, 80*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent, 2*counts_per_inch, 270);
+	move_forward(motor_percent-10, 1.1*counts_per_inch, 180);
 	Sleep(1.0);
 	servoMotor.SetPercent(motor_percent);
 	Sleep(0.15);
 	servoMotor.SetPercent(0);
-	move_forward(-motor_percent, 2*counts_per_inch, 270);
+	move_forward(-(motor_percent-10), 1.1*counts_per_inch, -1);
 	Sleep(1.0);
 	servoMotor.SetPercent(motor_percent);
 	Sleep(0.13);
 	servoMotor.SetPercent(0);
-	move_forward(motor_percent, 2*counts_per_inch, 270);
+	move_forward((motor_percent-10), 1.1*counts_per_inch, -1);
 	Sleep(5.0);
 	servoMotor.SetPercent(-motor_percent);
 	Sleep(0.26);
