@@ -170,6 +170,8 @@ int main(void)
     } //Wait for screen to be pressed
 
 	// //Lever
+	//New servo callibrate 
+	//Min - 695, Max - 2395
 
 	//Servo 180 = 40% 0.52 sec
 
@@ -180,23 +182,23 @@ int main(void)
 	Sleep(1.0);
 	turn_left(motor_percent, 80*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent, (14*counts_per_inch) + ((lever*4)*counts_per_inch), 90);
+	move_forward(motor_percent, (13*counts_per_inch) + ((lever*4)*counts_per_inch), 90);
 	LCD.WriteLine("Lever: ");
 	LCD.WriteLine(lever);
 	Sleep(1.0);
 	turn_left(motor_percent, 80*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent-10, 1.1*counts_per_inch, 180);
+	move_forward(motor_percent-10, 1*counts_per_inch, 170);
 	Sleep(1.0);
 	servoMotor.SetPercent(motor_percent);
-	Sleep(0.15);
+	Sleep(0.22);
 	servoMotor.SetPercent(0);
-	move_forward(-(motor_percent-10), 1.1*counts_per_inch, -1);
+	move_forward(-(motor_percent-10), 1.3*counts_per_inch, -1);
 	Sleep(1.0);
 	servoMotor.SetPercent(motor_percent);
-	Sleep(0.13);
+	Sleep(0.12);
 	servoMotor.SetPercent(0);
-	move_forward((motor_percent-10), 1.1*counts_per_inch, -1);
+	move_forward((motor_percent-10), 1.3*counts_per_inch, -1);
 	Sleep(5.0);
 	servoMotor.SetPercent(-motor_percent);
 	Sleep(0.26);
