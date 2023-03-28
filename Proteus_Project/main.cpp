@@ -186,22 +186,10 @@ int main(void)
 	Sleep(1.0);
 	move_forward(motor_percent, 20*counts_per_inch, 0);
 	Sleep(1.0);
-	move_forward(motor_percent-10, 1.1*counts_per_inch, 180);
+	turn_right(motor_percent, 90*counts_per_degree_right);
 	Sleep(1.0);
-	servoMotor.SetPercent(motor_percent);
-	Sleep(0.15);
-	servoMotor.SetPercent(0);
-	move_forward(-(motor_percent-10), 1.1*counts_per_inch, -1);
+	move_forward(motor_percent, 20*counts_per_inch, 270);
 	Sleep(1.0);
-	servoMotor.SetPercent(motor_percent);
-	Sleep(0.13);
-	servoMotor.SetPercent(0);
-	move_forward((motor_percent-10), 1.1*counts_per_inch, -1);
-	Sleep(5.0);
-	servoMotor.SetPercent(-motor_percent);
-	Sleep(0.26);
-	servoMotor.SetPercent(0);
-	
 
 
 
