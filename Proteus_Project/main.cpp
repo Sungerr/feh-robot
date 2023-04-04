@@ -82,7 +82,7 @@ void move_forward(int percent, int counts, int direction) //using encoders
     left_encoder.ResetCounts();
 
     //Set both motors to desired percent
-    right_motor.SetPercent(5+percent);
+    right_motor.SetPercent(percent);
     left_motor.SetPercent(percent);
 
     //While the average of the left and right encoder is less than counts,
@@ -174,41 +174,73 @@ int main(void)
 	//Servo 180 = 40% 0.52 sec
 	//Negative - right, postive - left
 
-	
-	move_forward(motor_percent, 10*counts_per_inch, 0);
+
+	//Luggage Dropoff Extra Credit part
+	move_forward(-motor_percent, 10*counts_per_inch, -1);
 	Sleep(1.0);
-	turn_left(motor_percent, 80*counts_per_degree_left);
+	turn_left(motor_percent, 90*counts_per_degree_left);
 	Sleep(1.0);
-	move_forward(motor_percent, 21*counts_per_inch, -1);
+	move_forward(-motor_percent, 10*counts_per_inch, -1);
 	Sleep(1.0);
-	turn_right(motor_percent, 80*counts_per_degree_right);
+	turn_right(motor_percent, 85*counts_per_degree_right);
 	Sleep(1.0);
-	move_forward(motor_percent, 20*counts_per_inch, 0);
-	Sleep(1.0);
-	move_forward(motor_percent, 18*counts_per_inch, 0);
-	Sleep(1.0);
-	turn_right(motor_percent, 80*counts_per_degree_right);
+	move_forward(-motor_percent, 8*counts_per_inch, -1);
 	Sleep(1.0);
 	servoMotor.SetPercent(-40);
-	Sleep(0.26);
-	servoMotor.Stop();
-	move_forward(motor_percent, 18*counts_per_inch, -1);
-
-	Sleep(1.0);
-	servoMotor.SetPercent(40);
-	Sleep(0.31);
-	servoMotor.Stop();
-	Sleep(1.0);
-	move_forward(-motor_percent, 5*counts_per_inch, -1);
-	servoMotor.SetPercent(40);
-	Sleep(0.1);
+	Sleep(0.43);
 	servoMotor.Stop();
 	move_forward(motor_percent, 5*counts_per_inch, -1);
 	Sleep(1.0);
-	servoMotor.SetPercent(-40);
-	Sleep(0.2);
+	servoMotor.SetPercent(40);
+	Sleep(0.50);
 	servoMotor.Stop();
-	move_forward(-motor_percent, 5*counts_per_inch, -1);
+	move_forward(motor_percent, 10*counts_per_inch, -1);
+	Sleep(1.0);
+	turn_left(motor_percent, 85*counts_per_degree_left);
+	Sleep(1.0);
+	move_forward(motor_percent, 10*counts_per_inch, -1);
+	Sleep(1.0);
+	turn_right(motor_percent, 85*counts_per_degree_right);
+	Sleep(1.0);
+	move_forward(motor_percent, 15*counts_per_inch, -1);
+	Sleep(1.0);
+
+
+	
+	// move_forward(motor_percent, 10*counts_per_inch, 0);
+	// Sleep(1.0);
+	// turn_left(motor_percent, 80*counts_per_degree_left);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 21*counts_per_inch, -1);
+	// Sleep(1.0);
+	// turn_right(motor_percent, 80*counts_per_degree_right);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 20*counts_per_inch, 0);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 18*counts_per_inch, 0);
+	// Sleep(1.0);
+	// turn_right(motor_percent, 80*counts_per_degree_right);
+	// Sleep(1.0);
+	// servoMotor.SetPercent(-40);
+	// Sleep(0.26);
+	// servoMotor.Stop();
+	// move_forward(motor_percent, 18*counts_per_inch, -1);
+
+	// Sleep(1.0);
+	// servoMotor.SetPercent(40);
+	// Sleep(0.31);
+	// servoMotor.Stop();
+	// Sleep(1.0);
+	// move_forward(-motor_percent, 5*counts_per_inch, -1);
+	// servoMotor.SetPercent(40);
+	// Sleep(0.1);
+	// servoMotor.Stop();
+	// move_forward(motor_percent, 5*counts_per_inch, -1);
+	// Sleep(1.0);
+	// servoMotor.SetPercent(-40);
+	// Sleep(0.2);
+	// servoMotor.Stop();
+	// move_forward(-motor_percent, 5*counts_per_inch, -1);
 
 
 
