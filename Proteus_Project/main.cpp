@@ -119,43 +119,41 @@ void luggage(int motor_percent){
 	Sleep(1.0);
 	turn_left(motor_percent, 90*counts_per_degree_left);
 	Sleep(1.0);
+	move_forward(-motor_percent, 13*counts_per_inch, -1);
+	Sleep(1.0);
+	turn_right(motor_percent, 80*counts_per_degree_right);
+	Sleep(1.0);
 	move_forward(-motor_percent, 10*counts_per_inch, -1);
 	Sleep(1.0);
-	turn_right(motor_percent, 85*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(-motor_percent, 8*counts_per_inch, -1);
-	Sleep(1.0);
-	servoMotor.SetPercent(-40);
-	Sleep(0.43);
+	servoMotor.SetPercent(-20);
+	Sleep(2.0);
 	servoMotor.Stop();
 	move_forward(motor_percent, 8*counts_per_inch, -1);
 	Sleep(1.0);
-	servoMotor.SetPercent(40);
-	Sleep(0.50);
+	servoMotor.SetPercent(20);
+	Sleep(1.0);
 	servoMotor.Stop();
-	// move_forward(motor_percent, 10*counts_per_inch, -1);
-	// Sleep(1.0);
-	// turn_left(motor_percent, 85*counts_per_degree_left);
-	// Sleep(1.0);
-	// move_forward(motor_percent, 10*counts_per_inch, -1);
-	// Sleep(1.0);
-	// turn_right(motor_percent, 85*counts_per_degree_right);
-	// Sleep(1.0);
-	// move_forward(motor_percent, 15*counts_per_inch, -1);
-	// Sleep(1.0);
 }
 
 void lever(int motor_percent, int leverNum){
 	turn_right(motor_percent, 85*counts_per_degree_right);
-	move_forward(motor_percent, ((2*counts_per_inch)+(lever*counts_per_inch)), -1);
-	turn_left(motor_percent, 80*counts_per_degree_left);
-	move_forward(motor_percent, 4*counts_per_inch, -1);
+	Sleep(1.0);
+	move_forward(motor_percent, ((2*counts_per_inch)+(leverNum*counts_per_inch)), -1);
+	Sleep(1.0);
+	turn_left(motor_percent, 75*counts_per_degree_left);
+	Sleep(1.0);
+	move_forward(motor_percent, 1*counts_per_inch, -1);
+	Sleep(1.0);
 	servo.SetDegree(150);
+	Sleep(1.0);
+	move_forward(-motor_percent, 1*counts_per_inch, -1);
+	Sleep(1.0);
+	servo.SetDegree(180);
+	Sleep(1.0);
+	move_forward(motor_percent, 1*counts_per_inch, -1);
+	Sleep(5.0);
 	servo.SetDegree(90);
-	move_forward(-motor_percent, 2*counts_per_inch, -1);
-	servo.SetDegree(150);
-	move_forward(motor_percent, 2*counts_per_inch, -1);
-	servo.SetDegree(90);
+	Sleep(1.0);
 }
 
 void kiosk(int motor_percent){
@@ -182,7 +180,7 @@ int main(void)
     float x, y; //for touch screen
 	int leverNum = RPS.GetCorrectLever();
 	LCD.WriteLine("Lever: ");
-	LCD.WriteLine(lever);
+	LCD.WriteLine(leverNum);
 
     //Initialize the screen
     LCD.Clear(BLACK);
