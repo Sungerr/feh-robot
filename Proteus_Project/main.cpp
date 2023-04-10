@@ -114,6 +114,54 @@ void move_to_y(int y) {
 	}
 }
 
+void luggage(int motor_percent){
+	move_forward(-motor_percent, 10*counts_per_inch, -1);
+	Sleep(1.0);
+	turn_left(motor_percent, 90*counts_per_degree_left);
+	Sleep(1.0);
+	move_forward(-motor_percent, 10*counts_per_inch, -1);
+	Sleep(1.0);
+	turn_right(motor_percent, 85*counts_per_degree_right);
+	Sleep(1.0);
+	move_forward(-motor_percent, 8*counts_per_inch, -1);
+	Sleep(1.0);
+	servoMotor.SetPercent(-40);
+	Sleep(0.43);
+	servoMotor.Stop();
+	move_forward(motor_percent, 8*counts_per_inch, -1);
+	Sleep(1.0);
+	servoMotor.SetPercent(40);
+	Sleep(0.50);
+	servoMotor.Stop();
+	// move_forward(motor_percent, 10*counts_per_inch, -1);
+	// Sleep(1.0);
+	// turn_left(motor_percent, 85*counts_per_degree_left);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 10*counts_per_inch, -1);
+	// Sleep(1.0);
+	// turn_right(motor_percent, 85*counts_per_degree_right);
+	// Sleep(1.0);
+	// move_forward(motor_percent, 15*counts_per_inch, -1);
+	// Sleep(1.0);
+}
+
+void lever(int motor_percent, int leverNum){
+	turn_right(motor_percent, 85*counts_per_degree_right);
+	move_forward(motor_percent, ((2*counts_per_inch)+(lever*counts_per_inch)), -1);
+	turn_left(motor_percent, 80*counts_per_degree_left);
+	move_forward(motor_percent, 4*counts_per_inch, -1);
+	servo.SetDegree(150);
+	servo.SetDegree(90);
+	move_forward(-motor_percent, 2*counts_per_inch, -1);
+	servo.SetDegree(150);
+	move_forward(motor_percent, 2*counts_per_inch, -1);
+	servo.SetDegree(90);
+}
+
+void kiosk(int motor_percent){
+
+}
+
 int kiosk_light() {
 	if (cds.Value() < red_threshold) {
 		LCD.WriteLine("Red");
@@ -132,7 +180,7 @@ int main(void)
 	RPS.InitializeTouchMenu();
     int motor_percent = 40; //Input power level here
     float x, y; //for touch screen
-	int lever = RPS.GetCorrectLever();
+	int leverNum = RPS.GetCorrectLever();
 	LCD.WriteLine("Lever: ");
 	LCD.WriteLine(lever);
 
@@ -169,44 +217,15 @@ int main(void)
         Sleep(0.1);
     } //Wait for screen to be pressed
 
+	luggage(motor_percent);
+	lever(motor_percent, leverNum);
+
 	// //Lever
 
 	//Servo 180 = 40% 0.52 sec
 	//Negative - right, postive - left
 
 
-	//Luggage Dropoff Extra Credit part
-	move_forward(-motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
-	turn_left(motor_percent, 90*counts_per_degree_left);
-	Sleep(1.0);
-	move_forward(-motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
-	turn_right(motor_percent, 85*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(-motor_percent, 8*counts_per_inch, -1);
-	Sleep(1.0);
-	servoMotor.SetPercent(-40);
-	Sleep(0.43);
-	servoMotor.Stop();
-	move_forward(motor_percent, 5*counts_per_inch, -1);
-	Sleep(1.0);
-	servoMotor.SetPercent(40);
-	Sleep(0.50);
-	servoMotor.Stop();
-	move_forward(motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
-	turn_left(motor_percent, 85*counts_per_degree_left);
-	Sleep(1.0);
-	move_forward(motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
-	turn_right(motor_percent, 85*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(motor_percent, 15*counts_per_inch, -1);
-	Sleep(1.0);
-
-
-	
 	// move_forward(motor_percent, 10*counts_per_inch, 0);
 	// Sleep(1.0);
 	// turn_left(motor_percent, 80*counts_per_degree_left);
