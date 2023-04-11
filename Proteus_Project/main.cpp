@@ -116,48 +116,96 @@ void move_to_y(int y) {
 
 void luggage(int motor_percent){
 	move_forward(-motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
+	Sleep(0.5);
 	turn_left(motor_percent, 90*counts_per_degree_left);
-	Sleep(1.0);
+	Sleep(0.5);
 	move_forward(-motor_percent, 13*counts_per_inch, -1);
-	Sleep(1.0);
-	turn_right(motor_percent, 80*counts_per_degree_right);
-	Sleep(1.0);
+	Sleep(0.5);
+	turn_right(motor_percent, 70*counts_per_degree_right);
+	Sleep(0.5);
 	move_forward(-motor_percent, 10*counts_per_inch, -1);
-	Sleep(1.0);
+	Sleep(0.5);
 	servoMotor.SetPercent(-20);
-	Sleep(2.0);
+	Sleep(4.0);
 	servoMotor.Stop();
-	move_forward(motor_percent, 8*counts_per_inch, -1);
-	Sleep(1.0);
+	move_forward(motor_percent, 5*counts_per_inch, -1);
+	Sleep(0.5);
 	servoMotor.SetPercent(20);
-	Sleep(1.0);
-	servoMotor.Stop();
+	Sleep(2.0);
+	servoMotor.Stop();	
 }
 
 void lever(int motor_percent, int leverNum){
 	turn_right(motor_percent, 85*counts_per_degree_right);
-	Sleep(1.0);
-	move_forward(motor_percent, ((2*counts_per_inch)+(leverNum*counts_per_inch)), -1);
-	Sleep(1.0);
-	turn_left(motor_percent, 75*counts_per_degree_left);
-	Sleep(1.0);
-	move_forward(motor_percent, 1*counts_per_inch, -1);
-	Sleep(1.0);
+	Sleep(0.5);
+	move_forward(motor_percent, ((2*counts_per_inch)/*(leverNum*counts_per_inch)*/), -1);
+	Sleep(0.5);
+	turn_left(motor_percent, 73*counts_per_degree_left);
+	Sleep(0.5);
+	move_forward(motor_percent, 2.5*counts_per_inch, -1);
+	Sleep(0.5);
 	servo.SetDegree(150);
-	Sleep(1.0);
-	move_forward(-motor_percent, 1*counts_per_inch, -1);
-	Sleep(1.0);
-	servo.SetDegree(180);
-	Sleep(1.0);
-	move_forward(motor_percent, 1*counts_per_inch, -1);
+	Sleep(0.5);
+	move_forward(-motor_percent, 1.5*counts_per_inch, -1);
+	Sleep(0.5);
+	servo.SetDegree(165);
+	Sleep(0.5);
+	move_forward(motor_percent, 1.5*counts_per_inch, -1);
 	Sleep(5.0);
 	servo.SetDegree(90);
-	Sleep(1.0);
+	Sleep(0.5);
 }
 
 void kiosk(int motor_percent){
+	move_forward(-motor_percent, 4.5*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	Sleep(0.5);
+	move_forward(motor_percent, 8*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	Sleep(0.5);
+	move_forward(motor_percent, 18*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 5*counts_per_degree_right);
+	Sleep(0.5);
+	move_forward(motor_percent, 15*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	Sleep(0.5);
+	servo.SetDegree(165);
+	move_forward(motor_percent, 6*counts_per_inch, -1);
+	Sleep(0.5);
+	LCD.WriteLine("blue");
+	move_forward(motor_percent, 4*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_left(motor_percent, 90*counts_per_degree_left);
+	Sleep(0.5);
+	move_forward(motor_percent, 4*counts_per_inch, -1);
+	Sleep(0.5);
+	move_forward(-motor_percent, 4*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	Sleep(0.5);
+}
 
+void passport(int motor_percent) {
+	move_forward(motor_percent, 10*counts_per_inch, -1);
+	Sleep(0.5);
+	servo.SetDegree(90);
+	Sleep(0.5);
+	move_forward(-motor_percent, 5*counts_per_inch, -1);
+	servo.SetDegree(50);
+	Sleep(0.5);
+	move_forward(motor_percent, 5*counts_per_inch, -1);
+	Sleep(0.5);
+	servo.SetDegree(100);
+	Sleep(0.5);
+	move_forward(-motor_percent, 5*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	Sleep(0.5);
+	move_forward(motor_percent, 40*counts_per_inch, -1);
 }
 
 int kiosk_light() {
@@ -217,6 +265,8 @@ int main(void)
 
 	luggage(motor_percent);
 	lever(motor_percent, leverNum);
+	kiosk(motor_percent);
+	passport(motor_percent);
 
 	// //Lever
 
@@ -225,35 +275,35 @@ int main(void)
 
 
 	// move_forward(motor_percent, 10*counts_per_inch, 0);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_left(motor_percent, 80*counts_per_degree_left);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 21*counts_per_inch, -1);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 80*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 20*counts_per_inch, 0);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 18*counts_per_inch, 0);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 80*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// servoMotor.SetPercent(-40);
 	// Sleep(0.26);
 	// servoMotor.Stop();
 	// move_forward(motor_percent, 18*counts_per_inch, -1);
 
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// servoMotor.SetPercent(40);
 	// Sleep(0.31);
 	// servoMotor.Stop();
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(-motor_percent, 5*counts_per_inch, -1);
 	// servoMotor.SetPercent(40);
 	// Sleep(0.1);
 	// servoMotor.Stop();
 	// move_forward(motor_percent, 5*counts_per_inch, -1);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// servoMotor.SetPercent(-40);
 	// Sleep(0.2);
 	// servoMotor.Stop();
@@ -265,31 +315,31 @@ int main(void)
 	//No RPS
 
 	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(-motor_percent-5, 1*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_left(motor_percent, 90*counts_per_degree_left);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 30*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_left(motor_percent, 18.5*counts_per_degree_left);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 23*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// kiosk_light();
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 87*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(-motor_percent, 20*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 90*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 14*counts_per_inch, 0); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 90*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 20*counts_per_inch, 0); //see function
 
 
@@ -300,34 +350,34 @@ int main(void)
 	//With RPS
 
     // move_forward(motor_percent, 12*counts_per_inch, 30); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_left(motor_percent, 90*counts_per_degree_left);
-    // Sleep(1.0);
+    // Sleep(0.5);
     // move_forward(motor_percent, 18*counts_per_inch, 90); //see function
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// turn_right(motor_percent, 88);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent+10, 35*counts_per_inch, 0);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// // On ramp
 	// turn_right(motor_percent, 90*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(motor_percent, 25*counts_per_inch, 315);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_to_x(light_x);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_to_y(light_y);
-	// Sleep(1.0);
+	// Sleep(0.5);
 	// move_forward(-motor_percent, 5*counts_per_inch, 315);
-	// Sleep(1.0);
+	// Sleep(0.5);
     // turn_right(motor_percent, 120*counts_per_degree_right);
-	// Sleep(1.0);
+	// Sleep(0.5);
     // move_forward(motor_percent, 35*counts_per_inch,225);
-    // Sleep(1.0);
+    // Sleep(0.5);
     // turn_right(motor_percent, 70*counts_per_degree_right);
-    // Sleep(1.0);
+    // Sleep(0.5);
     // move_forward(motor_percent, 30*counts_per_inch, 180);
-    // Sleep(1.0);
+    // Sleep(0.5);
 
     return 0;
 }
