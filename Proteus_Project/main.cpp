@@ -115,15 +115,15 @@ void move_to_y(int y) {
 }
 
 void luggage(int motor_percent){
-	move_forward(-motor_percent, 10*counts_per_inch, -1);
+	move_forward(-(motor_percent-5), 10*counts_per_inch, -1);
 	Sleep(0.5);
 	turn_left((motor_percent-10), 90*counts_per_degree_left);
 	Sleep(0.5);
-	move_forward(-motor_percent, 12.5*counts_per_inch, -1);
+	move_forward(-(motor_percent-5), 12*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_right(motor_percent, 70*counts_per_degree_right);
+	turn_right((motor_percent-10), 74*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(-motor_percent, 10*counts_per_inch, -1);
+	move_forward(-(motor_percent-5), 10*counts_per_inch, -1);
 	Sleep(0.5);
 	servoMotor.SetPercent(-20);
 	Sleep(4.0);
@@ -138,11 +138,11 @@ void luggage(int motor_percent){
 void lever(int motor_percent, int leverNum){
 	turn_right(motor_percent, 85*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(motor_percent, ((2.75*counts_per_inch)/*(leverNum*counts_per_inch)*/), -1);
+	move_forward(motor_percent, ((2.9*(leverNum))*counts_per_inch + 2.75*counts_per_inch), -1);
 	Sleep(0.5);
-	turn_left(motor_percent, 70*counts_per_degree_left);
+	turn_left(motor_percent, 68*counts_per_degree_left);
 	Sleep(0.5);
-	move_forward(motor_percent, 2.75*counts_per_inch, -1);
+	move_forward(motor_percent, 3*counts_per_inch, -1);
 	Sleep(0.5);
 	servo.SetDegree(130);
 	Sleep(0.5);
@@ -150,39 +150,47 @@ void lever(int motor_percent, int leverNum){
 	Sleep(0.5);
 	servo.SetDegree(165);
 	Sleep(0.5);
-	move_forward(motor_percent, 0.5*counts_per_inch, -1);
+	move_forward(motor_percent, 1*counts_per_inch, -1);
 	Sleep(5.0);
-	servo.SetDegree(90);
+	servo.SetDegree(120);
+	Sleep(0.5);
+
+	move_forward(-motor_percent, 4.5*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 84*counts_per_degree_right);
+	Sleep(0.5);
+	servo.SetDegree(150);
+	Sleep(0.5);
+	//hit wal
+	move_forward(motor_percent, (20-(5*leverNum))*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
 	Sleep(0.5);
 }
 
 void kiosk(int motor_percent){
-	move_forward(-motor_percent, 4.5*counts_per_inch, -1);
-	Sleep(0.5);
-	servo.SetDegree(150);
-	Sleep(0.5);
-	turn_right(motor_percent, 90*counts_per_degree_right);
-	Sleep(0.5);
-	move_forward(motor_percent, 20*counts_per_inch, -1);
-	Sleep(0.5);
-	turn_right(motor_percent, 90*counts_per_degree_right);
-	Sleep(0.5);
+	//up ramp
 	move_forward(motor_percent, 22*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_right(motor_percent, 30*counts_per_degree_right);
+	//adjust
+	turn_right(motor_percent, 55*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(motor_percent, 20*counts_per_inch, -1);
+	//get to light
+	move_forward(motor_percent, 19*counts_per_inch, -1);
 	Sleep(0.5);
 	LCD.WriteLine("red");
-	turn_right(motor_percent, 70*counts_per_degree_right);
+	Sleep(0.5);
+	turn_right(motor_percent, 85*counts_per_degree_right);
 	Sleep(0.5);
 	servo.SetDegree(165);
-	move_forward(motor_percent, 10*counts_per_inch, -1);
+	//get to button
+	move_forward(motor_percent, 8*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_left(motor_percent, 90*counts_per_degree_left);
+	turn_left(motor_percent, 84*counts_per_degree_left);
 	Sleep(0.5);
 	move_forward(motor_percent, 4*counts_per_inch, -1);
 	Sleep(0.5);
+	//back up button
 	move_forward(-motor_percent, 2*counts_per_inch, -1);
 	Sleep(0.5);
 	turn_right(motor_percent, 80*counts_per_degree_right);
@@ -203,7 +211,8 @@ void passport(int motor_percent) {
 	Sleep(0.5);
 	move_forward(-motor_percent, 5*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_right(motor_percent, 90*counts_per_degree_right);
+	turn_right(motor_percent, 88*counts_per_degree_right);
+	servo.SetDegree(160);
 	Sleep(0.5);
 	
 }
@@ -215,9 +224,9 @@ void big_button(int motor_percent) {
 	Sleep(0.5);
 	move_forward(motor_percent, 15*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_right(motor_percent, 80*counts_per_degree_right);
+	turn_right(motor_percent, 94*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(motor_percent, 35*counts_per_inch, -1);
+	move_forward(motor_percent, 40*counts_per_inch, -1);
 }
 
 int kiosk_light() {
