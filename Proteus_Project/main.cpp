@@ -26,6 +26,20 @@ FEHMotor left_motor(FEHMotor::Motor3, 9.0);
 FEHServo servo(FEHServo::Servo0);
 FEHMotor servoMotor(FEHMotor::Motor1, 9.0);
 
+int kiosk_light() {
+	if (cds.Value() < red_threshold) {
+		LCD.WriteLine("Red");
+		return RED;
+	} else if (cds.Value() < blue_threshold){
+		LCD.WriteLine("Blue");
+		return BLUE;
+	} else {
+		//LCD.WriteLine("blue");
+		return 1;
+	}
+	LCD.WriteLine(cds.Value());
+}
+
 void turn_left(int percent, int counts) {
 	//Reset encoder counts
 	right_encoder.ResetCounts();
@@ -82,7 +96,8 @@ void move_forward(int percent, int counts, int direction) //using encoders
     left_encoder.ResetCounts();
 
     //Set both motors to desired percent
-    right_motor.SetPercent(percent);
+	int adjust = percent < 0 ? percent : percent;
+    right_motor.SetPercent(adjust);
     left_motor.SetPercent(percent);
 
     //While the average of the left and right encoder is less than counts,
@@ -97,9 +112,9 @@ void move_forward(int percent, int counts, int direction) //using encoders
 void move_to_x(int x) {
 	while (RPS.X() > 0 && (RPS.X() < (x - 2) || RPS.X() > (x + 2))) {
 		if (RPS.X() > x) {
-			move_forward(10, 1, 90);
+			move_forward(10, 1, -1);
 		} else {
-			move_forward(10, 1, 270);
+			move_forward(10, 1, -1);
 		}
 	}
 }
@@ -107,9 +122,9 @@ void move_to_x(int x) {
 void move_to_y(int y) {
 	while (RPS.Y() > 0 && (RPS.Y() < (y - 2) || RPS.Y() > (y + 2))) {
 		if (RPS.Y() > y) {
-			move_forward(10, 1, 180);
+			move_forward(10, 1, -1);
 		} else {
-			move_forward(10, 1, 0);
+			move_forward(10, 1, -1);
 		}
 	}
 }
@@ -117,13 +132,15 @@ void move_to_y(int y) {
 void luggage(int motor_percent){
 	move_forward(-(motor_percent-5), 10*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_left((motor_percent-10), 90*counts_per_degree_left);
+	turn_left((motor_percent-10), 100*counts_per_degree_left);
 	Sleep(0.5);
-	move_forward(-(motor_percent-5), 12*counts_per_inch, -1);
+	move_forward(-(motor_percent-5), 11*counts_per_inch, -1);
 	Sleep(0.5);
-	turn_right((motor_percent-10), 74*counts_per_degree_right);
+	// move_to_x(23);
+
+	turn_right((motor_percent-10), 90*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(-(motor_percent-5), 10*counts_per_inch, -1);
+	move_forward(-(motor_percent-10), 10*counts_per_inch, -1);
 	Sleep(0.5);
 	servoMotor.SetPercent(-20);
 	Sleep(4.0);
@@ -138,19 +155,19 @@ void luggage(int motor_percent){
 void lever(int motor_percent, int leverNum){
 	turn_right(motor_percent, 85*counts_per_degree_right);
 	Sleep(0.5);
-	move_forward(motor_percent, ((2.9*(leverNum))*counts_per_inch + 2.75*counts_per_inch), -1);
+	move_forward(motor_percent, ((2.9*(leverNum))*counts_per_inch + 2.6*counts_per_inch), -1);
 	Sleep(0.5);
 	turn_left(motor_percent, 68*counts_per_degree_left);
 	Sleep(0.5);
-	move_forward(motor_percent, 3*counts_per_inch, -1);
+	move_forward(motor_percent, 2.6*counts_per_inch, -1);
 	Sleep(0.5);
 	servo.SetDegree(130);
 	Sleep(0.5);
-	move_forward(-motor_percent, 1*counts_per_inch, -1);
+	move_forward(-motor_percent, 1.2*counts_per_inch, -1);
 	Sleep(0.5);
 	servo.SetDegree(165);
 	Sleep(0.5);
-	move_forward(motor_percent, 1*counts_per_inch, -1);
+	move_forward(motor_percent, 0.7*counts_per_inch, -1);
 	Sleep(5.0);
 	servo.SetDegree(120);
 	Sleep(0.5);
@@ -173,34 +190,48 @@ void kiosk(int motor_percent){
 	move_forward(motor_percent, 22*counts_per_inch, -1);
 	Sleep(0.5);
 	//adjust
-	turn_right(motor_percent, 55*counts_per_degree_right);
+	turn_left(motor_percent, 140*counts_per_degree_right);
 	Sleep(0.5);
+	move_forward(motor_percent, 10*counts_per_inch, -1);
+	Sleep(0.5);
+	move_forward(-motor_percent, 14*counts_per_inch, -1);
+	Sleep(0.5);
+	turn_right(motor_percent, 90*counts_per_degree_right);
+	servo.SetDegree(155);
+	Sleep(0.5);
+	
 	//get to light
-	move_forward(motor_percent, 19*counts_per_inch, -1);
+	move_forward(motor_percent, 22*counts_per_inch, -1);
 	Sleep(0.5);
-	LCD.WriteLine("red");
-	Sleep(0.5);
-	turn_right(motor_percent, 85*counts_per_degree_right);
-	Sleep(0.5);
-	servo.SetDegree(165);
-	//get to button
-	move_forward(motor_percent, 8*counts_per_inch, -1);
-	Sleep(0.5);
-	turn_left(motor_percent, 84*counts_per_degree_left);
-	Sleep(0.5);
-	move_forward(motor_percent, 4*counts_per_inch, -1);
-	Sleep(0.5);
-	//back up button
+	// move_to_y(62.6);
+	
 	move_forward(-motor_percent, 2*counts_per_inch, -1);
-	Sleep(0.5);
-	turn_right(motor_percent, 80*counts_per_degree_right);
+	// Sleep(0.5);
+	// kiosk_light();
+	// LCD.WriteLine("red");
+	// Sleep(0.5);
+
+	// turn_right(motor_percent, 85*counts_per_degree_right);
+	// Sleep(0.5);
+	
+	// //get to button
+	// move_forward(motor_percent, 9.5*counts_per_inch, -1);
+	// Sleep(0.5);
+	// turn_left(motor_percent, 84*counts_per_degree_left);
+	// Sleep(0.5);
+	// move_forward(motor_percent, 4*counts_per_inch, -1);
+	// Sleep(0.5);
+	//back up button
+	// move_forward(-motor_percent, 2*counts_per_inch, -1);
+	// Sleep(0.5);
+	turn_right(motor_percent, 85*counts_per_degree_right);
 	Sleep(0.5);
 }
 
 void passport(int motor_percent) {
-	move_forward(motor_percent, 7*counts_per_inch, -1);
+	move_forward(motor_percent, 9*counts_per_inch, -1);
 	Sleep(0.5);
-	servo.SetDegree(90);
+	servo.SetDegree(80);
 	Sleep(0.5);
 	move_forward(-motor_percent, 5*counts_per_inch, -1);
 	servo.SetDegree(50);
@@ -225,25 +256,17 @@ void big_button(int motor_percent) {
 	move_forward(motor_percent, 15*counts_per_inch, -1);
 	Sleep(0.5);
 	turn_right(motor_percent, 94*counts_per_degree_right);
+	servo.SetDegree(90);
 	Sleep(0.5);
+	move_forward(motor_percent, 15*counts_per_inch, -1);
 	move_forward(motor_percent, 40*counts_per_inch, -1);
-}
-
-int kiosk_light() {
-	if (cds.Value() < red_threshold) {
-		LCD.WriteLine("Red");
-		return RED;
-	} else if (cds.Value() < blue_threshold){
-		LCD.WriteLine("Blue");
-		return BLUE;
-	} else {
-		LCD.WriteLine("blue");
-		return 1;
-	}
 }
 
 int main(void)
 {
+	// move_forward(-40, 20*counts_per_inch, -1);
+	// Sleep(1.0);
+	// move_forward(40, 20*counts_per_inch, -1);
 	RPS.InitializeTouchMenu();
     int motor_percent = 40; //Input power level here
     float x, y; //for touch screen
@@ -254,14 +277,6 @@ int main(void)
     //Initialize the screen
     LCD.Clear(BLACK);
     LCD.SetFontColor(WHITE);
-
-	// while(true) {
-	// 	LCD.WriteLine("X:");
-	// 	LCD.WriteLine(RPS.X());
-	// 	LCD.WriteLine("Y:");
-	// 	LCD.WriteLine(RPS.Y());
-	// 	Sleep(0.1);
-	// }
 
 	//servo.TouchCalibrate();
 	// int max = 1900;
